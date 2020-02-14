@@ -5,7 +5,7 @@ import easygui
 import requests
 import youtube_dl
 import ffmpeg
-from PIL import Image
+from PIL import Image, ImageOps
 import requests
 from io import BytesIO
 import shutil
@@ -14,7 +14,7 @@ import shutil
 x = 1
 
 # Known information
-baseDesc = "If you\'re an owner of any song/picture on this channel and want it removed, just message/email me and I\'ll do my best to delete it as soon as possible.\n\nHave a nice day! :)"
+baseDesc = "If you\'re an owner of any song/picture on this channel and want it removed, just message/email me and I\'ll do my best to delete it as soon as possible.\n\nHave a nice day! :)\n\nCopyright Disclaimer Under Section 107 of the Copyright Act 1976, allowance is made for \"fair use\" for purposes such as criticism, comment, news reporting, teaching, scholarship, and research. Fair use is a use permitted by copyright statute that might otherwise be infringing. Non-profit, educational or personal use tips the balance in favor of fair use."
 
 # Is the song going to be downloaded from a URL, or supplied with a file?
 songUrlOrFile = easygui.buttonbox ("Enter a URL or choose an audio file", choices = ["File","URL"])
@@ -61,17 +61,10 @@ videoTags = "lofi,hiphop,mix,mixtape,beat,vrrdntupload,beats,vibe,chill,relax,st
 print(listArtistSocials)
 # Generate thumbnail
 shutil.copy('image.jpg', 'thumbnail.jpg')
-im = Image.open("thumbnail.jpg")
-width, height = im.size   # Get dimensions
-
-left = (width - 1920)/2
-top = (height - 1080)/2
-right = (width + 1920)/2
-bottom = (height + 1080)/2
-
-# Crop the center of the image
-im = im.crop((left, top, right, bottom))
-im.save('thumbnail.jpg')
+original_image = Image.open("thumbnail.jpg")
+size = (1920, 1080)
+fit_and_resized_image = ImageOps.fit(original_image, size, Image.ANTIALIAS)
+fit_and_resized_image.save('thumbnail.jpg')
 
 # Download video, convert to mp3 if URL is given
 try:
