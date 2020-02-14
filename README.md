@@ -4,5 +4,5 @@ This is a script I wrote to upload videos to my channel, [vrrdnt](https://youtub
 
 ## TODO
 
-Modularize\n
-Clean up + organize
+Modularize 
+Clean up and organize
