@@ -31,13 +31,13 @@ const job = {
 			type:'data',
 			layerName:'image.jpg',
 			property:'Position',
-			expression:'var w=thisComp.width;var h=thisComp.height;var h2=h/2;[w2,h2]'
+			expression:'var w=thisComp.width;var h=thisComp.height;var w2=w/2;var h2=h/2;[w2,h2]'
 		},
 		{
 			type:'data',
 			layerName:'image.jpg',
 			property:'Scale',
-			expression:'sizeX = 100*thisComp.width/thisLayer.width;[sizeX, sizeX]'
+			expression:'sizeX = 100*thisComp.width/thisLayer.width;[sizeX+2, sizeX+2]'
 		},
     ],
 	actions:{
