@@ -1,17 +1,20 @@
+""" Made by vrrdnt, February 2020 """
+
 from __future__ import unicode_literals
 import os
 import subprocess
 from io import BytesIO
 import shutil
+import webbrowser
 import easygui
 import youtube_dl
 from PIL import Image, ImageOps
 import requests
 import pyimgur
 
-# Authenticate as a user for pyimgur.
-CLIENT_ID = "Imgur Client ID"
-CLIENT_SECRET = "Imgur Client Secret"
+# Stuff for pyimgur
+CLIENT_ID = "CLIENT_ID"
+CLIENT_SECRET = "CLIENT_SECRET"
 IM = pyimgur.Imgur(CLIENT_ID, CLIENT_SECRET)
 AUTH_URL = IM.authorization_url('pin')
 webbrowser.open(AUTH_URL)
@@ -39,7 +42,8 @@ elif SONGURLORFILE == "URL":
     SONGURL = []
     SONGURL.append(easygui.enterbox("Please enter a YouTube/SoundCloud URL:"))
 
-# Asks the user to supply an image URL or select an image file, and uploads either to Imgur pre-jpg-conversion.
+# Asks the user to supply an image URL or select an image file,
+# and uploads either to Imgur pre-jpg-conversion.
 IMAGEURLORFILE = easygui.buttonbox("Enter a URL or choose an image file", choices=["File", "URL"])
 if IMAGEURLORFILE == "File":
     IMAGEFILE = easygui.fileopenbox(msg=None, title=None,\
@@ -58,7 +62,8 @@ elif IMAGEURLORFILE == "URL":
     UPLOADED_IMAGE = IM.upload_image('image.jpg')
     IMAGELINK = UPLOADED_IMAGE.link
 
-# Asks for song title, artist, artist links, any additions to the description, and any additional tags.
+# Asks for song title, artist, artist links, any additions to
+# the description, and any additional tags.
 SONGTITLE = easygui.enterbox("Please enter a song title:")
 SONGARTIST = easygui.enterbox("Please enter an artist name:")
 ARTISTLINKS = []
@@ -90,11 +95,9 @@ RESIZEDIMAGED.save('thumbnail.jpg')
 # Download a song from a valid source as defined by youtube-dl, and convert to audio.mp3.
 try:
     SONGURL
-    URLGIVEN = True
 except NameError:
-    URLGIVEN = False
-
-if URLGIVEN is True:
+    pass
+else:
     YTDL_OPTS = {
         'format': 'bestaudio/best',
         'outtmpl': 'audio.%(ext)s',
