@@ -1,80 +1,101 @@
 from __future__ import unicode_literals
 import os
 import subprocess
-import easygui
-import requests
-import youtube_dl
-import ffmpeg
-from PIL import Image, ImageOps
-import requests
 from io import BytesIO
 import shutil
+import easygui
+import youtube_dl
+from PIL import Image, ImageOps
+import requests
+import pyimgur
 
-# I don't know how to exclude else:
-x = 1
+# Authenticate as a user for pyimgur.
+CLIENT_ID = "Imgur Client ID"
+CLIENT_SECRET = "Imgur Client Secret"
+IM = pyimgur.Imgur(CLIENT_ID, CLIENT_SECRET)
+AUTH_URL = IM.authorization_url('pin')
+webbrowser.open(AUTH_URL)
+PIN = easygui.enterbox("Please enter the pin provided in your browser.")
+IM.exchange_pin(PIN)
 
-# Known information
-baseDesc = "If you\'re an owner of any song/picture on this channel and want it removed, just message/email me and I\'ll do my best to delete it as soon as possible.\n\nHave a nice day! :)\n\nCopyright Disclaimer Under Section 107 of the Copyright Act 1976, allowance is made for \"fair use\" for purposes such as criticism, comment, news reporting, teaching, scholarship, and research. Fair use is a use permitted by copyright statute that might otherwise be infringing. Non-profit, educational or personal use tips the balance in favor of fair use."
+# This information automatically goes into the description.
+BASEDESC = "If you\'re an owner of any song/picture on this channel \
+            and want it removed, just message/email me and I\'ll do \
+            my best to delete it as soon as possible.\n\nHave a nice \
+            day! :)\n\nCopyright Disclaimer Under Section 107 of the \
+            Copyright Act 1976, allowance is made for \"fair use\" \
+            for purposes such as criticism, comment, news reporting, \
+            teaching, scholarship, and research. Fair use is a use \
+            permitted by copyright statute that might otherwise be \
+            infringing. Non-profit, educational or personal use tips \
+            the balance in favor of fair use."
 
-# Is the song going to be downloaded from a URL, or supplied with a file?
-songUrlOrFile = easygui.buttonbox ("Enter a URL or choose an audio file", choices = ["File","URL"])
-if songUrlOrFile == "File":
-    songFile = easygui.fileopenbox(msg=None, title=None, filetypes=["*.mp3"], multiple=False)
-    shutil.copy(songFile, 'audio.mp3')
-elif songUrlOrFile == "URL":
-    songURL = []
-    songURL.append(easygui.enterbox("Please enter a YouTube/SoundCloud URL:"))
-else:
-    x = x
+# Asks the user to supply a song URL or select an image file.
+SONGURLORFILE = easygui.buttonbox("Enter a URL or choose an audio file", choices=["File", "URL"])
+if SONGURLORFILE == "File":
+    SONGFILE = easygui.fileopenbox(msg=None, title=None, filetypes=["*.mp3"], multiple=False)
+    shutil.copy(SONGFILE, 'audio.mp3')
+elif SONGURLORFILE == "URL":
+    SONGURL = []
+    SONGURL.append(easygui.enterbox("Please enter a YouTube/SoundCloud URL:"))
 
-# Is the image going to be downloaded from a URL, or supplied with a file?
-imageUrlOrFile = easygui.buttonbox ("Enter a URL or choose an image file", choices = ["File","URL"])
-if imageUrlOrFile == "File":
-    imageFile = easygui.fileopenbox(msg=None, title=None, filetypes=[["*.jpg","*.png"]], multiple=False)
-    img = Image.open(imageFile)
-    rgb_img = img.convert('RGB')
-    rgb_img.save('image.jpg')
-elif imageUrlOrFile == "URL":
-    imageURL = easygui.enterbox("Please enter a direct link to an image.")
-    response = requests.get(imageURL)
-    img = Image.open(BytesIO(response.content))
-    rgb_img = img.convert('RGB')
-    rgb_img.save('image.jpg')
-else:
-    x = x
+# Asks the user to supply an image URL or select an image file, and uploads either to Imgur pre-jpg-conversion.
+IMAGEURLORFILE = easygui.buttonbox("Enter a URL or choose an image file", choices=["File", "URL"])
+if IMAGEURLORFILE == "File":
+    IMAGEFILE = easygui.fileopenbox(msg=None, title=None,\
+    filetypes=[["*.jpg", "*.png"]], multiple=False)
+    UPLOADED_IMAGE = IM.upload_image(IMAGEFILE)
+    IMAGELINK = UPLOADED_IMAGE.link
+    IMG = Image.open(IMAGEFILE)
+    RGB_IMG = IMG.convert('RGB')
+    RGB_IMG.save('image.jpg')
+elif IMAGEURLORFILE == "URL":
+    IMAGEURL = easygui.enterbox("Please enter a direct link to an image.")
+    RESPONSE = requests.get(IMAGEURL)
+    IMG = Image.open(BytesIO(RESPONSE.content))
+    RGB_IMG = IMG.convert('RGB')
+    RGB_IMG.save('image.jpg')
+    UPLOADED_IMAGE = IM.upload_image('image.jpg')
+    IMAGELINK = UPLOADED_IMAGE.link
 
-# Asks for the song title and artist. Also requests any social links.
-songTitle = easygui.enterbox("Please enter a song title:")
-songArtist = easygui.enterbox("Please enter an artist name:")
-artistLinks = []
-artistLinks = easygui.multenterbox("Please enter all of the artist's social links.", "Social Links", ["Instagram","Twitter","SoundCloud","Spotify","Bandcamp","Website"])
-while("" in artistLinks) : 
-    artistLinks.remove("") 
-listArtistSocials = "\n".join(artistLinks)
-descriptionAdd = easygui.enterbox("Please enter any additions to the description you\'d like to add.")
-addedTags = easygui.enterbox("Please enter a comma-seperated list of tags to add to the video.")
+# Asks for song title, artist, artist links, any additions to the description, and any additional tags.
+SONGTITLE = easygui.enterbox("Please enter a song title:")
+SONGARTIST = easygui.enterbox("Please enter an artist name:")
+ARTISTLINKS = []
+ARTISTLINKS = easygui.multenterbox("Please enter all of \
+    the artist's social links.", "Social Links", ["Instagram", \
+    "Twitter", "SoundCloud", "Spotify", "Bandcamp", "Website"])
+DESCRIPTIONADD = easygui.enterbox("Please enter any additions to \
+    the description you\'d like to add.")
+ADDEDTAGS = easygui.enterbox("Please enter a comma-seperated list of tags to add to the video.")
 
-videoTitle = (songTitle + " | " + songArtist)
-listArtistSocials = "\n".join(artistLinks)
-videoTags = "lofi,hiphop,mix,mixtape,beat,vrrdntupload,beats,vibe,chill,relax,study,homework,loop," + addedTags
+# Some formatting for the description.
+while "" in ARTISTLINKS:
+    ARTISTLINKS.remove("")
+LISTARTISTSOCIALS = "\n".join(ARTISTLINKS)
+VIDEOTITLE = (SONGTITLE + " | " + SONGARTIST)
+LISTARTISTSOCIALS = "\n".join(ARTISTLINKS)
+VIDEOTAGS = "lofi,hiphop,mix,mixtape,beat,vrrdntupload,beats,vibe,\
+    chill,relax,study,homework,loop," + ADDEDTAGS
 
-print(listArtistSocials)
-# Generate thumbnail
+# Generate thumbnail.jpg.
 shutil.copy('image.jpg', 'thumbnail.jpg')
-original_image = Image.open("thumbnail.jpg")
-size = (1920, 1080)
-fit_and_resized_image = ImageOps.fit(original_image, size, Image.ANTIALIAS)
-fit_and_resized_image.save('thumbnail.jpg')
+ORIGINAL_IMAGE = Image.open("thumbnail.jpg")
+ORIGINAL_IMAGE.save('thumbnail.jpg')
+ORIGINAL_IMAGE = Image.open("thumbnail.jpg")
+SIZE = (1920, 1080)
+RESIZEDIMAGED = ImageOps.fit(ORIGINAL_IMAGE, SIZE, Image.ANTIALIAS)
+RESIZEDIMAGED.save('thumbnail.jpg')
 
-# Download video, convert to mp3 if URL is given
+# Download a song from a valid source as defined by youtube-dl, and convert to audio.mp3.
 try:
-    songURL
-    urlGiven = 1
+    SONGURL
+    URLGIVEN = True
 except NameError:
-    urlGiven = 0
+    URLGIVEN = False
 
-if urlGiven == 1:
-    ydl_opts = {
+if URLGIVEN is True:
+    YTDL_OPTS = {
         'format': 'bestaudio/best',
         'outtmpl': 'audio.%(ext)s',
         'postprocessors': [{
@@ -83,23 +104,22 @@ if urlGiven == 1:
             'preferredquality': '320',
             }],
         }
-    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-        ydl.download(songURL)
-else:
-    x = x
-    
-# Run nexrender
+    with youtube_dl.YoutubeDL(YTDL_OPTS) as ydl:
+        ydl.download(SONGURL)
+
+# Run nexrender. https://github.com/inlife/nexrender
 subprocess.call(['node', 'render.js'])
 
-# Upload the video
-subprocess.call(['upload', '-filename', 'output.mp4', '-privacy', 'public', '-thumbnail', 'thumbnail.jpg', '-tags', videoTags, '-title', videoTitle, '-categoryId', '10', '-description', descriptionAdd + '\n\nArtist links:\n' + listArtistSocials + "\n\n" + baseDesc])
+# Upload the video using youtubeuploader. https://github.com/porjo/youtubeuploader
+subprocess.call(['youtubeuploader_windows_amd64.exe', '-filename', 'output.mp4', '-privacy', \
+    'public', '-thumbnail', 'thumbnail.jpg', '-tags', VIDEOTAGS, \
+    '-title', VIDEOTITLE, '-categoryId', '10', '-description', \
+    DESCRIPTIONADD + '\n\nArtist links:\n' + LISTARTISTSOCIALS + \
+    "\n\nImage link:\n" + IMAGELINK + "\n\n" + BASEDESC])
 
-# Cleanup!
-dir_name = "./"
-workingDir = os.listdir(dir_name)
-
-for item in workingDir:
+# Cleanup all downloaded, rendered and converted files.
+DIR_NAME = "./"
+WORKINGDIR = os.listdir(DIR_NAME)
+for item in WORKINGDIR:
     if item.endswith(".jpg") or item.endswith(".mp4") or item.endswith(".mp3"):
-        os.remove(os.path.join(dir_name, item))
-    else:
-        x = x
+        os.remove(os.path.join(DIR_NAME, item))
