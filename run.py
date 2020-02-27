@@ -23,15 +23,15 @@ IM.exchange_pin(PIN)
 
 # This information automatically goes into the description.
 BASEDESC = "If you\'re an owner of any song/picture on this channel \
-            and want it removed, just message/email me and I\'ll do \
-            my best to delete it as soon as possible.\n\nHave a nice \
-            day! :)\n\nCopyright Disclaimer Under Section 107 of the \
-            Copyright Act 1976, allowance is made for \"fair use\" \
-            for purposes such as criticism, comment, news reporting, \
-            teaching, scholarship, and research. Fair use is a use \
-            permitted by copyright statute that might otherwise be \
-            infringing. Non-profit, educational or personal use tips \
-            the balance in favor of fair use."
+and want it removed, just message/email me and I\'ll do \
+my best to delete it as soon as possible.\n\nHave a nice \
+day! :)\n\nCopyright Disclaimer Under Section 107 of the \
+Copyright Act 1976, allowance is made for \"fair use\" \
+for purposes such as criticism, comment, news reporting, \
+teaching, scholarship, and research. Fair use is a use \
+permitted by copyright statute that might otherwise be \
+infringing. Non-profit, educational or personal use tips \
+the balance in favor of fair use."
 
 # Asks the user to supply a song URL or select an image file.
 SONGURLORFILE = easygui.buttonbox("Enter a URL or choose an audio file", choices=["File", "URL"])
@@ -67,10 +67,10 @@ elif IMAGEURLORFILE == "URL":
 SONGTITLE = easygui.enterbox("Please enter a song title:")
 SONGARTIST = easygui.enterbox("Please enter an artist name:")
 ARTISTLINKS = []
-ARTISTLINKS = easygui.multenterbox("Please enter all of \
-    the artist's social links.", "Social Links", ["Instagram", \
+ARTISTLINKS = easygui.multenterbox("Please enter all of\
+    the artist's social links.", "Social Links", ["Instagram",\
     "Twitter", "SoundCloud", "Spotify", "Bandcamp", "Website"])
-DESCRIPTIONADD = easygui.enterbox("Please enter any additions to \
+DESCRIPTIONADD = easygui.enterbox("Please enter any additions to\
     the description you\'d like to add.")
 ADDEDTAGS = easygui.enterbox("Please enter a comma-seperated list of tags to add to the video.")
 
