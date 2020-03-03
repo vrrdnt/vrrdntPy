@@ -5,7 +5,13 @@ Hey there! This is a script I authored that I use to render videos and upload th
 
 ## Requirements
 
--- insert pip requirements
+Here's the imports. (note to self: make pip requirement installer thing, no idea what it's called)
+-- from io import BytesIO
+-- import easygui
+-- import youtube_dl
+-- from PIL import Image, ImageOps
+-- import requests
+-- import pyimgur
 
 ## Files and folders
 
