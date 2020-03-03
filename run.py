@@ -49,9 +49,12 @@ IMAGEURLORFILE = easygui.buttonbox("Enter a URL or choose an image file", choice
 if IMAGEURLORFILE == "File":
     IMAGEFILE = easygui.fileopenbox(msg=None, title=None,\
     filetypes=[["*.jpg", "*.png"]], multiple=False)
+    IMG = Image.open(IMAGEFILE)
+    RGB_IMG = IMG.convert('RGB')
+    RGB_IMG.save('image.png')
     UPLOADED_IMAGE = IM.upload_image(IMAGEFILE)
     IMAGELINK = UPLOADED_IMAGE.link
-    IMG = Image.open(IMAGEFILE)
+    IMG = Image.open('image.png')
     RGB_IMG = IMG.convert('RGB')
     RGB_IMG.save('image.jpg', format='JPEG', subsampling=0, quality=100)
 elif IMAGEURLORFILE == "URL":
