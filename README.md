@@ -5,7 +5,7 @@ Hey there! This is a script I authored that I use to render videos and upload th
 
 ## Requirements
 
-Here's the imports. (note to self: make pip requirement installer thing, no idea what it's called)
+Here's the imports. (note to self: make pip requirement installer thing, no idea what it's called)  
 -- from io import BytesIO  
 -- import easygui  
 -- import youtube_dl  
