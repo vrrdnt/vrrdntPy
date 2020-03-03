@@ -14,7 +14,7 @@ Here's the imports. (note to self: make pip requirement installer thing, no idea
 -- import pyimgur  
 
 ADDITIONAL:  
-This script heavily relies on (porjo/youtubeuploader)[https://github.com/porjo/youtubeuploader] and (inlife/nexrender)[https://github.com/inlife/nexrender] for uploading and rendering, respectively.
+This script heavily relies on [porjo/youtubeuploader](https://github.com/porjo/youtubeuploader) and [inlife/nexrender](https://github.com/inlife/nexrender) for uploading and rendering, respectively.
 
 ## Files and folders
 
