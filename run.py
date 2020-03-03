@@ -13,13 +13,14 @@ import requests
 import pyimgur
 
 # Stuff for pyimgur
-CLIENT_ID = "CLIENT_ID"
-CLIENT_SECRET = "CLIENT_SECRET"
+CLIENT_ID = "INSERT HERE"
+CLIENT_SECRET = "INSERT HERE"
 IM = pyimgur.Imgur(CLIENT_ID, CLIENT_SECRET)
 AUTH_URL = IM.authorization_url('pin')
 webbrowser.open(AUTH_URL)
 PIN = easygui.enterbox("Please enter the pin provided in your browser.")
 IM.exchange_pin(PIN)
+DIR_NAME = "./"
 
 # This information automatically goes into the description.
 BASEDESC = "If you\'re an owner of any song/picture on this channel \
@@ -52,15 +53,18 @@ if IMAGEURLORFILE == "File":
     IMAGELINK = UPLOADED_IMAGE.link
     IMG = Image.open(IMAGEFILE)
     RGB_IMG = IMG.convert('RGB')
-    RGB_IMG.save('image.jpg')
+    RGB_IMG.save('image.jpg', format='JPEG', subsampling=0, quality=100)
 elif IMAGEURLORFILE == "URL":
     IMAGEURL = easygui.enterbox("Please enter a direct link to an image.")
     RESPONSE = requests.get(IMAGEURL)
     IMG = Image.open(BytesIO(RESPONSE.content))
     RGB_IMG = IMG.convert('RGB')
-    RGB_IMG.save('image.jpg')
-    UPLOADED_IMAGE = IM.upload_image('image.jpg')
+    RGB_IMG.save('image.png')
+    UPLOADED_IMAGE = IM.upload_image('image.png')
     IMAGELINK = UPLOADED_IMAGE.link
+    RGB_IMG = IMG.convert('RGB')
+    RGB_IMG.save('image.jpg', format='JPEG', subsampling=0, quality=100)
+    os.remove(os.path.join(DIR_NAME, 'image.png'))
 
 # Asks for song title, artist, artist links, any additions to
 # the description, and any additional tags.
@@ -86,11 +90,11 @@ VIDEOTAGS = "lofi,hiphop,mix,mixtape,beat,vrrdntupload,beats,vibe,\
 # Generate thumbnail.jpg.
 shutil.copy('image.jpg', 'thumbnail.jpg')
 ORIGINAL_IMAGE = Image.open("thumbnail.jpg")
-ORIGINAL_IMAGE.save('thumbnail.jpg')
+ORIGINAL_IMAGE.save('thumbnail.jpg', format='JPEG', subsampling=0, quality=100)
 ORIGINAL_IMAGE = Image.open("thumbnail.jpg")
 SIZE = (1920, 1080)
 RESIZEDIMAGED = ImageOps.fit(ORIGINAL_IMAGE, SIZE, Image.ANTIALIAS)
-RESIZEDIMAGED.save('thumbnail.jpg')
+RESIZEDIMAGED.save('thumbnail.jpg', format='JPEG', subsampling=0, quality=100)
 
 # Download a song from a valid source as defined by youtube-dl, and convert to audio.mp3.
 try:
@@ -121,7 +125,6 @@ subprocess.call(['youtubeuploader_windows_amd64.exe', '-filename', 'output.mp4',
     "\n\nImage link:\n" + IMAGELINK + "\n\n" + BASEDESC])
 
 # Cleanup all downloaded, rendered and converted files.
-DIR_NAME = "./"
 WORKINGDIR = os.listdir(DIR_NAME)
 for item in WORKINGDIR:
     if item.endswith(".jpg") or item.endswith(".mp4") or item.endswith(".mp3"):
