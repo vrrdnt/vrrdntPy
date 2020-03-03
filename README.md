@@ -13,6 +13,9 @@ Here's the imports. (note to self: make pip requirement installer thing, no idea
 -- import requests  
 -- import pyimgur  
 
+ADDITIONAL:  
+This script heavily relies on (porjo/youtubeuploader)[https://github.com/porjo/youtubeuploader] and (inlife/nexrender)[https://github.com/inlife/nexrender] for uploading and rendering, respectively.
+
 ## Files and folders
 
 You'll need a working Adobe After Effects project file, either named Video.aep or something else that you specify in render.js. (note to self: upload render.js with defaults)
