@@ -75,10 +75,10 @@ SONGTITLE = easygui.enterbox("Please enter a song title:")
 SONGARTIST = easygui.enterbox("Please enter an artist name:")
 ARTISTLINKS = []
 ARTISTLINKS = easygui.multenterbox("Please enter all of\
-    the artist's social links.", "Social Links", ["Instagram",\
-    "Twitter", "SoundCloud", "Spotify", "Bandcamp", "Website"])
+the artist's social links.", "Social Links", ["Instagram",\
+"Twitter", "SoundCloud", "Spotify", "Bandcamp", "Website"])
 DESCRIPTIONADD = easygui.enterbox("Please enter any additions to\
-    the description you\'d like to add.")
+the description you\'d like to add.")
 ADDEDTAGS = easygui.enterbox("Please enter a comma-seperated list of tags to add to the video.")
 
 # Some formatting for the description.
@@ -88,7 +88,7 @@ LISTARTISTSOCIALS = "\n".join(ARTISTLINKS)
 VIDEOTITLE = (SONGTITLE + " | " + SONGARTIST)
 LISTARTISTSOCIALS = "\n".join(ARTISTLINKS)
 VIDEOTAGS = "lofi,hiphop,mix,mixtape,beat,vrrdntupload,beats,vibe,\
-    chill,relax,study,homework,loop," + ADDEDTAGS
+chill,relax,study,homework,loop," + ADDEDTAGS
 
 # Generate thumbnail.jpg.
 shutil.copy('image.jpg', 'thumbnail.jpg')
