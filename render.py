@@ -49,14 +49,13 @@ IMAGEURLORFILE = easygui.buttonbox("Enter a URL or choose an image file", choice
 if IMAGEURLORFILE == "File":
     IMAGEFILE = easygui.fileopenbox(msg=None, title=None,\
     filetypes=[["*.jpg", "*.png"]], multiple=False)
-    IMG = Image.open(IMAGEFILE)
-    RGB_IMG = IMG.convert('RGB')
-    RGB_IMG.save('image.png')
     UPLOADED_IMAGE = IM.upload_image(IMAGEFILE)
     IMAGELINK = UPLOADED_IMAGE.link
-    IMG = Image.open('image.png')
+    IMG = Image.open(IMAGEFILE)
     RGB_IMG = IMG.convert('RGB')
-    RGB_IMG.save('image.jpg', format='JPEG', subsampling=0, quality=100)
+    SIZE = (2560, 1440)
+    RESIZEDIMAGE = ImageOps.fit(RGB_IMG, SIZE, Image.ANTIALIAS)
+    RESIZEDIMAGE.save('image.jpg', format='JPEG', subsampling=0, quality=100)
 elif IMAGEURLORFILE == "URL":
     IMAGEURL = easygui.enterbox("Please enter a direct link to an image.")
     RESPONSE = requests.get(IMAGEURL)
@@ -65,8 +64,10 @@ elif IMAGEURLORFILE == "URL":
     RGB_IMG.save('image.png')
     UPLOADED_IMAGE = IM.upload_image('image.png')
     IMAGELINK = UPLOADED_IMAGE.link
-    RGB_IMG = IMG.convert('RGB')
-    RGB_IMG.save('image.jpg', format='JPEG', subsampling=0, quality=100)
+    IMG = Image.open('image.png')
+    SIZE = (2560, 1440)
+    RESIZEDIMAGE = ImageOps.fit(RGB_IMG, SIZE, Image.ANTIALIAS)
+    RESIZEDIMAGE.save('image.jpg', format='JPEG', subsampling=0, quality=100)
     os.remove(os.path.join(DIR_NAME, 'image.png'))
 
 # Asks for song title, artist, artist links, any additions to
