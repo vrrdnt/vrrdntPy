@@ -74,10 +74,10 @@ elif IMAGEURLORFILE == "URL":
 SONGTITLE = easygui.enterbox("Please enter a song title:")
 SONGARTIST = easygui.enterbox("Please enter an artist name:")
 ARTISTLINKS = []
-ARTISTLINKS = easygui.multenterbox("Please enter all of\
+ARTISTLINKS = easygui.multenterbox("Please enter all of \
 the artist's social links.", "Social Links", ["Instagram",\
 "Twitter", "SoundCloud", "Spotify", "Bandcamp", "Website"])
-DESCRIPTIONADD = easygui.enterbox("Please enter any additions to\
+DESCRIPTIONADD = easygui.enterbox("Please enter any additions to \
 the description you\'d like to add.")
 ADDEDTAGS = easygui.enterbox("Please enter a comma-seperated list of tags to add to the video.")
 
