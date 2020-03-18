@@ -112,7 +112,7 @@ else:
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
-            'preferredquality': '320',
+            'preferredquality': '196',
             }],
         }
     with youtube_dl.YoutubeDL(YTDL_OPTS) as ydl:
