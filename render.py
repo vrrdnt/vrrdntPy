@@ -1,26 +1,21 @@
-""" Made by vrrdnt, February 2020 """
+""" Made by vrrdnt, created February 2020 """
 
 from __future__ import unicode_literals
 import os
 import subprocess
 from io import BytesIO
 import shutil
-import webbrowser
+from base64 import b64encode
+import json
 import easygui
 import youtube_dl
 from PIL import Image, ImageOps
 import requests
-import pyimgur
 
 # Stuff for pyimgur
-CLIENT_ID = "INSERT HERE"
-CLIENT_SECRET = "INSERT HERE"
-IM = pyimgur.Imgur(CLIENT_ID, CLIENT_SECRET)
-AUTH_URL = IM.authorization_url('pin')
-webbrowser.open(AUTH_URL)
-PIN = easygui.enterbox("Please enter the pin provided in your browser.")
-IM.exchange_pin(PIN)
-DIR_NAME = "./"
+CLIENT_ID = ""
+HEADERS = {"Authorization": "Client-ID {CLIENT_ID}"}
+IMGURUPLOADURL = "https://api.imgur.com/3/upload"
 
 # This information automatically goes into the description.
 BASEDESC = "If you\'re an owner of any song/picture on this channel \
@@ -49,9 +44,20 @@ IMAGEURLORFILE = easygui.buttonbox("Enter a URL or choose an image file", choice
 if IMAGEURLORFILE == "File":
     IMAGEFILE = easygui.fileopenbox(msg=None, title=None,\
     filetypes=[["*.jpg", "*.png"]], multiple=False)
-    UPLOADED_IMAGE = IM.upload_image(IMAGEFILE)
-    IMAGELINK = UPLOADED_IMAGE.link
     IMG = Image.open(IMAGEFILE)
+    RBG_IMG = IMG.convert('RGB')
+    RGB_IMG = IMG.save('image.png')
+    IMAGEUPLOAD = requests.post(
+        IMGURUPLOADURL,
+        headers=HEADERS,
+        DATA={
+            'image': b64encode(open('image.png', 'rb').read()),
+            'type': 'base64'
+        }
+    )
+    DATA = json.loads(IMAGEUPLOAD.text)['DATA']
+    IMAGELINK = DATA['link']
+    IMG = Image.open('image.png')
     RGB_IMG = IMG.convert('RGB')
     SIZE = (2560, 1440)
     RESIZEDIMAGE = ImageOps.fit(RGB_IMG, SIZE, Image.ANTIALIAS)
@@ -62,13 +68,20 @@ elif IMAGEURLORFILE == "URL":
     IMG = Image.open(BytesIO(RESPONSE.content))
     RGB_IMG = IMG.convert('RGB')
     RGB_IMG.save('image.png')
-    UPLOADED_IMAGE = IM.upload_image('image.png')
-    IMAGELINK = UPLOADED_IMAGE.link
+    IMAGEUPLOAD = requests.post(
+        IMGURUPLOADURL,
+        HEADERS=HEADERS,
+        DATA={
+            'image': b64encode(open('image.png', 'rb').read()),
+            'type': 'base64'
+        }
+    )
+    DATA = json.loads(IMAGEUPLOAD.text)['DATA']
+    IMAGELINK = DATA['link']
     IMG = Image.open('image.png')
     SIZE = (2560, 1440)
     RESIZEDIMAGE = ImageOps.fit(RGB_IMG, SIZE, Image.ANTIALIAS)
     RESIZEDIMAGE.save('image.jpg', format='JPEG', subsampling=0, quality=100)
-    os.remove(os.path.join(DIR_NAME, 'image.png'))
 
 # Asks for song title, artist, artist links, any additions to
 # the description, and any additional tags.
@@ -88,12 +101,12 @@ while "" in ARTISTLINKS:
 LISTARTISTSOCIALS = "\n".join(ARTISTLINKS)
 VIDEOTITLE = (SONGTITLE + " | " + SONGARTIST)
 LISTARTISTSOCIALS = "\n".join(ARTISTLINKS)
-VIDEOTAGS = "lofi,hiphop,mix,mixtape,beat,vrrdntupload,beats,vibe,\
-chill,relax,study,homework,loop," + ADDEDTAGS
+VIDEOTAGS = "{comma separated list, ending witha comma" + ADDEDTAGS
 
 # Generate thumbnail.jpg.
-shutil.copy('image.jpg', 'thumbnail.jpg')
-ORIGINAL_IMAGE = Image.open("thumbnail.jpg")
+shutil.copy('image.png', 'thumbnail.png')
+ORIGINAL_IMAGE = Image.open("thumbnail.png")
+ORIGINAL_IMAGE = ORIGINAL_IMAGE.convert('RGB')
 ORIGINAL_IMAGE.save('thumbnail.jpg', format='JPEG', subsampling=0, quality=100)
 ORIGINAL_IMAGE = Image.open("thumbnail.jpg")
 SIZE = (1920, 1080)
@@ -112,7 +125,7 @@ else:
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
-            'preferredquality': '196',
+            'preferredquality': '320',
             }],
         }
     with youtube_dl.YoutubeDL(YTDL_OPTS) as ydl:
@@ -129,7 +142,9 @@ subprocess.call(['youtubeuploader_windows_amd64.exe', '-filename', 'output.mp4',
     "\n\nImage link:\n" + IMAGELINK + "\n\n" + BASEDESC])
 
 # Cleanup all downloaded, rendered and converted files.
+DIR_NAME = "./"
 WORKINGDIR = os.listdir(DIR_NAME)
 for item in WORKINGDIR:
-    if item.endswith(".jpg") or item.endswith(".mp4") or item.endswith(".mp3"):
+    if item.endswith(".jpg") or item.endswith(".mp4") \
+    or item.endswith(".mp3") or item.endswith(".png"):
         os.remove(os.path.join(DIR_NAME, item))
