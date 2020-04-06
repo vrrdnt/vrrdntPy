@@ -101,7 +101,9 @@ while "" in ARTISTLINKS:
 LISTARTISTSOCIALS = "\n".join(ARTISTLINKS)
 VIDEOTITLE = (SONGTITLE + " | " + SONGARTIST)
 LISTARTISTSOCIALS = "\n".join(ARTISTLINKS)
-VIDEOTAGS = "{comma separated list, ending witha comma" + ADDEDTAGS
+VIDEOTAGS = "{Comma separated list, ending witha comma. These are your \
+    default tags for every video. If you don't use default tags, just \
+    set VIDEOTAGS to ADDEDTAGS}" + ADDEDTAGS
 
 # Generate thumbnail.jpg.
 shutil.copy('image.png', 'thumbnail.png')
@@ -111,7 +113,7 @@ ORIGINAL_IMAGE.save('thumbnail.jpg', format='JPEG', subsampling=0, quality=100)
 ORIGINAL_IMAGE = Image.open("thumbnail.jpg")
 SIZE = (1920, 1080)
 RESIZEDIMAGED = ImageOps.fit(ORIGINAL_IMAGE, SIZE, Image.ANTIALIAS)
-RESIZEDIMAGED.save('thumbnail.jpg', format='JPEG', subsampling=0, quality=100)
+RESIZEDIMAGED.save('thumbnail.jpg', format='JPEG', optimize=True, subsampling=0, quality=85)
 
 # Download a song from a valid source as defined by youtube-dl, and convert to audio.mp3.
 try:
@@ -125,7 +127,7 @@ else:
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
-            'preferredquality': '196',
+            'preferredquality': '320',
             }],
         }
     with youtube_dl.YoutubeDL(YTDL_OPTS) as ydl:
