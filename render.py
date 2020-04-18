@@ -101,7 +101,7 @@ while "" in ARTISTLINKS:
 LISTARTISTSOCIALS = "\n".join(ARTISTLINKS)
 VIDEOTITLE = (SONGTITLE + " | " + SONGARTIST)
 LISTARTISTSOCIALS = "\n".join(ARTISTLINKS)
-VIDEOTAGS = "{Comma separated list, ending witha comma. These are your \
+VIDEOTAGS = "{Comma separated list, ending with a comma. These are your \
     default tags for every video. If you don't use default tags, just \
     set VIDEOTAGS to ADDEDTAGS}" + ADDEDTAGS
 
