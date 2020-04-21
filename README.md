@@ -15,4 +15,4 @@ This script heavily relies on [porjo/youtubeuploader](https://github.com/porjo/y
 
 ## Files and folders
 
-You'll need a working Adobe After Effects project file, either named Video.aep or something else that you specify in render.js. (note to self: upload render.js with defaults)
+You'll need a working Adobe After Effects project file, either named Video.aep or something else that you specify in render.js.
