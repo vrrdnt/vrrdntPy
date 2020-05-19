@@ -67,7 +67,7 @@ sound = effects.normalize(sound)
 sound.export("audio.mp3", format="mp3")
 
 # Asks the user to supply an image URL or select an image file,
-# and uploads either to Imgur pre-jpg-conversion.
+# and uploads to Imgur pre-jpg-conversion.
 img_source = easygui.buttonbox(
     "Enter a URL or choose an image file", choices=["File", "URL"])
 if img_source == "File":
