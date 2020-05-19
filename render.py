@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 import os
+import sys
 import subprocess
 from io import BytesIO
 import shutil
@@ -11,13 +12,15 @@ import easygui
 import youtube_dl
 from PIL import Image, ImageOps
 import requests
+from pydub import AudioSegment, effects
 
+# Load settings
 with open('settings.json') as config:
     settings = json.load(config)
 
 # Imgur authentication for image uploads
-client_id = settings['ClientID']
-client_secret = settings['ClientSecret']
+client_id = settings['client_id']
+client_secret = settings['client_secret']
 headers = {"Authorization": "Client-ID " + client_id}
 api_url = "https://api.imgur.com/3/upload"
 
@@ -33,6 +36,35 @@ if song_source == "File":
     shutil.copy(song_file, 'audio.mp3')
 elif song_source == "URL":
     song_url = [easygui.enterbox("Please enter a YouTube/SoundCloud URL:")]
+    print("Downloading song from " + str(song_url))
+    # Download a song from a valid source as defined by youtube-dl, and convert to audio.mp3.
+    try:
+        song_url
+    except NameError:
+        pass
+    else:
+        song_download = {
+            'format':
+            'bestaudio/best',
+            'outtmpl':
+            'audio.%(ext)s',
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '320',
+            }],
+        }
+        with youtube_dl.YoutubeDL(song_download) as ytdl:
+            ytdl.download(song_url)
+
+# Normalize audio to 93.5 dB?
+AudioSegment.converter = "C:\\ffmpeg\\ffmpeg.exe"
+AudioSegment.ffmpeg = "C:\\ffmpeg\\ffmpeg.exe"
+AudioSegment.ffprobe ="C:\\ffmpeg\\ffprobe.exe"
+
+sound = AudioSegment.from_file("audio.mp3", "mp3")
+sound = effects.normalize(sound)
+sound.export("audio.mp3", format="mp3")
 
 # Asks the user to supply an image URL or select an image file,
 # and uploads either to Imgur pre-jpg-conversion.
@@ -90,15 +122,22 @@ the artist's social links.", "Social Links",
     ["Instagram", "Twitter", "SoundCloud", "Spotify", "Bandcamp", "Website"])
 desc_add = easygui.enterbox("Please enter any additions to \
 the description you\'d like to add.")
-tags_add = "," + easygui.enterbox(
-    "Please enter a comma-seperated list of tags to add to the video.")
+tags_add = easygui.enterbox("Please enter a comma-seperated list of tags to add to the video.")
 
 # Some formatting for the description.
 while "" in artist_links:
     artist_links.remove("")
 list_artist_links = "\n".join(artist_links)
 title = (title + " | " + artist)
-tags = settings['basetags'] + tags_add
+tags = settings['base_tags'] + "," + tags_add
+
+# Tag overflow check
+tagCheck = tags.replace(",", "")
+
+if len(str(tagCheck)) > 500:
+    print("WARNING! TAG OVERFLOW!")
+    overflowValue = len(str(tagCheck))-500
+    tags = tags[:-overflowValue]
 
 # Generate thumbnail.jpg.
 shutil.copy('image.jpg', 'thumbnail.jpg')
@@ -107,26 +146,6 @@ size = (1920, 1080)
 thumbnail = ImageOps.fit(thumbnail, size, Image.ANTIALIAS)
 thumbnail.save(
     'thumbnail.jpg', format='JPEG', optimized=True, subsampling=0, quality=85)
-
-# Download a song from a valid source as defined by youtube-dl, and convert to audio.mp3.
-try:
-    song_url
-except NameError:
-    pass
-else:
-    song_download = {
-        'format':
-        'bestaudio/best',
-        'outtmpl':
-        'audio.%(ext)s',
-        'postprocessors': [{
-            'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'mp3',
-            'preferredquality': '320',
-        }],
-    }
-    with youtube_dl.YoutubeDL(song_download) as ytdl:
-        ytdl.download(song_url)
 
 # Run nexrender. https://github.com/inlife/nexrender
 subprocess.call(['node', 'render.js'])
