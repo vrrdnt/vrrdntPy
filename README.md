@@ -19,3 +19,4 @@ You'll need a working Adobe After Effects project file, either named Video.aep o
 ## TODO
 
 Convert linebreaks in settings.json to actual linebreaks. Generated descriptions are a mess
+Normalize audio.mp3 to 93.5 dB (using pyDub?)
