@@ -1,5 +1,3 @@
-""" Made by vrrdnt, created February 2020 """
-
 import os
 import sys
 import subprocess
@@ -14,8 +12,6 @@ import requests
 from pydub import AudioSegment, effects
 from ytdl import ytdl
 from render import render
-
-
 
 with open('settings.json') as config:
     settings = json.load(config)
@@ -50,7 +46,7 @@ elif song_source == "URL":
 # Normalize audio to 93.5 dB?
 AudioSegment.converter = "C:\\ffmpeg\\ffmpeg.exe"
 AudioSegment.ffmpeg = "C:\\ffmpeg\\ffmpeg.exe"
-AudioSegment.ffprobe ="C:\\ffmpeg\\ffprobe.exe"
+AudioSegment.ffprobe = "C:\\ffmpeg\\ffprobe.exe"
 
 sound = AudioSegment.from_file("audio.mp3", "mp3")
 sound = effects.normalize(sound)
@@ -126,13 +122,11 @@ tagCheck = tags.replace(",", "")
 
 if len(str(tagCheck)) > 500:
     print("WARNING! TAG OVERFLOW!")
-    overflowValue = len(str(tagCheck))-500
+    overflowValue = len(str(tagCheck)) - 500
     tags = tags[:-overflowValue]
 
-
-
 # Run nexrender. https://github.com/inlife/nexrender
-nexscript = "render.js" # script that nexrender uses to configure the After Effects project and aerender.
+nexscript = "render.js"  # script that nexrender uses to configure the After Effects project and aerender.
 render(nexscript)
 
 # Upload the video using youtubeuploader. https://github.com/porjo/youtubeuploader
@@ -140,7 +134,7 @@ subprocess.call([
     'youtubeuploader_windows_amd64.exe', '-filename', 'output.mp4', '-privacy',
     'public', '-thumbnail', 'thumbnail.jpg', '-tags', tags, '-title', title,
     '-categoryId', '10', '-description', desc_add + '\n\nArtist links:\n' +
-    list_artist_links + "\n\nImage link:\n" + imgur_link + "\n\n" + base_desc
+                                         list_artist_links + "\n\nImage link:\n" + imgur_link + "\n\n" + base_desc
 ])
 
 # Cleanup all downloaded, rendered and converted files.
