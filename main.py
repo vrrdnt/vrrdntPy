@@ -6,10 +6,8 @@ import shutil
 from base64 import b64encode
 import json
 import easygui
-import youtube_dl
 from PIL import Image, ImageOps
 import requests
-from pydub import AudioSegment, effects
 from ytdl import ytdl
 from render import render
 
@@ -42,15 +40,6 @@ elif song_source == "URL":
         pass
     else:
         ytdl(song_url)
-
-# Normalize audio to 93.5 dB?
-AudioSegment.converter = "C:\\ffmpeg\\ffmpeg.exe"
-AudioSegment.ffmpeg = "C:\\ffmpeg\\ffmpeg.exe"
-AudioSegment.ffprobe = "C:\\ffmpeg\\ffprobe.exe"
-
-sound = AudioSegment.from_file("audio.mp3", "mp3")
-sound = effects.normalize(sound)
-sound.export("audio.mp3", format="mp3")
 
 # Asks the user to supply an image URL or select an image file,
 # and uploads either to Imgur pre-jpg-conversion.
