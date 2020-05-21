@@ -1,6 +1,5 @@
 """ Made by vrrdnt, created February 2020 """
 
-from __future__ import unicode_literals
 import os
 import sys
 import subprocess
