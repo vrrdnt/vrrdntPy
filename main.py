@@ -11,16 +11,10 @@ import requests
 from ytdl import ytdl
 from render import render
 
-# TODO: keep splitting main.py into separate files. render, image_gen, upload and normalize should all be configurable in settings.json.
+# TODO: keep splitting main.py into separate files. render, image_gen, upload and normalize should all be configurable (and toggleable?) in settings.json.
 
 with open('settings.json') as config:
     settings = json.load(config)
-
-# Imgur authentication for image uploads
-client_id = settings['client_id']
-client_secret = settings['client_secret']
-headers = {"Authorization": "Client-ID " + client_id}
-api_url = "https://api.imgur.com/3/upload"
 
 # Assignments
 base_desc = settings['base_desc']
