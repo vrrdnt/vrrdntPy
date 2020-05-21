@@ -11,6 +11,8 @@ import requests
 from ytdl import ytdl
 from render import render
 
+# TODO: keep splitting main.py into separate files. render, image_gen, upload and normalize should all be configurable in settings.json.
+
 with open('settings.json') as config:
     settings = json.load(config)
 

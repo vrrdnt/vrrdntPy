@@ -1,4 +1,4 @@
-import pydub
+from pydub import AudioSegment, effects
 
 # Normalize audio to 93.5 dB?
 AudioSegment.converter = "C:\\ffmpeg\\ffmpeg.exe"
