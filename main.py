@@ -1,5 +1,4 @@
 import os
-import sys
 import subprocess
 from io import BytesIO
 import shutil
@@ -11,7 +10,8 @@ import requests
 from ytdl import ytdl
 from render import render
 
-# TODO: keep splitting main.py into separate files. render, image_gen, upload and normalize should all be configurable (and toggleable?) in settings.json.
+# TODO: keep splitting main.py into separate files. render, image_gen, \
+#  upload and normalize should all be configurable (and toggleable?) in settings.json.
 
 with open('settings.json') as config:
     settings = json.load(config)
@@ -114,13 +114,6 @@ if len(str(tagCheck)) > 500:
 nexscript = "render.js"  # script that nexrender uses to configure the After Effects project and aerender.
 render(nexscript)
 
-# Upload the video using youtubeuploader. https://github.com/porjo/youtubeuploader
-subprocess.call([
-    'youtubeuploader_windows_amd64.exe', '-filename', 'output.mp4', '-privacy',
-    'public', '-thumbnail', 'thumbnail.jpg', '-tags', tags, '-title', title,
-    '-categoryId', '10', '-description', desc_add + '\n\nArtist links:\n' +
-                                         list_artist_links + "\n\nImage link:\n" + imgur_link + "\n\n" + base_desc
-])
 
 # Cleanup all downloaded, rendered and converted files.
 root_dir = "./"

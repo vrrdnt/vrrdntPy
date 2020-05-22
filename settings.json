@@ -1,6 +1,6 @@
 {
-  "ClientID": "",
-  "ClientSecret": "",
-  "basedesc": "This goes in every video description, below your custom description.",
-  "basetags": "Enter a comma-separated list of video tags here."
+  "imgur_client_id": "",
+  "imgur_client_secret": "",
+  "base_desc": "This goes in every video description, below your custom description.",
+  "base_tags": "Enter a comma-separated list of video tags here."
 }

@@ -1,2 +1,5 @@
 /venv/
 /.idea/
+client_secrets.json
+*.pyc
+/__pycache__/
