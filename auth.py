@@ -9,6 +9,8 @@ import json
 with open('settings.json') as config:
     settings = json.load(config)
 
+# TODO: see https://requests-oauthlib.readthedocs.io/en/latest/oauth2_workflow.html#backend-application-flow
+
 # YouTube authentication section
 
 CLIENT_SECRETS_FILE = 'youtube_client_secrets.json'
