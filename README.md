@@ -5,6 +5,7 @@ Hey there! This is a script I authored that I use to render videos and upload th
 ## Compatibility  
 
 This script is currently only compatible with Windows systems.  
+Requires Python 3.8 (?)
 
 ## Requirements
 
