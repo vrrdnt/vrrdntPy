@@ -1,5 +1,7 @@
-easygui~=0.98.1
+easygui
 youtube_dl
-Pillow~=7.1.2
-requests~=2.23.0
-pydub~=0.24.0
+Pillow
+requests
+pydub
+oauthlib
+requests_oauthlib

@@ -1,5 +1,5 @@
 /venv/
 /.idea/
-client_secrets.json
+youtube_client_secrets.json
 *.pyc
 /__pycache__/
