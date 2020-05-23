@@ -12,8 +12,9 @@ imgur_upload_endpoint = "https://api.imgur.com/3/upload"
 
 headers = {"Authorization": "Client-ID " + client_id}
 
-def imgur_upload(image):
-    imgur_upload = requests.post(
+
+def imgur_upload(image): # TODO: This is the file upload one. Need to mix URL/disk image upload.
+    image_upload = requests.post(
         imgur_upload_endpoint,
         headers=headers,
         data={

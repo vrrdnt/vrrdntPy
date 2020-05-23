@@ -9,7 +9,8 @@ from PIL import Image, ImageOps
 import requests
 from ytdl import ytdl
 from render import render
-from imgur_upload import imgur_link
+import imgur_upload
+from clean import clean
 
 # TODO: keep splitting main.py into separate files. render, image_gen, \
 #  upload and normalize should all be configurable (and toggleable?) in settings.json.
@@ -96,30 +97,5 @@ desc_add = easygui.enterbox("Please enter any additions to \
 the description you\'d like to add.")
 tags_add = easygui.enterbox("Please enter a comma-seperated list of tags to add to the video.")
 
-# Some formatting for the description.
-while "" in artist_links:
-    artist_links.remove("")
-list_artist_links = "\n".join(artist_links)
-title = (title + " | " + artist)
-tags = settings['base_tags'] + "," + tags_add
-
-# Tag overflow check
-tagCheck = tags.replace(",", "")
-
-if len(str(tagCheck)) > 500:
-    print("WARNING! TAG OVERFLOW!")
-    overflowValue = len(str(tagCheck)) - 500
-    tags = tags[:-overflowValue]
-
-# Run nexrender. https://github.com/inlife/nexrender
-nexscript = "render.js"  # script that nexrender uses to configure the After Effects project and aerender.
-render(nexscript)
-
-
 # Cleanup all downloaded, rendered and converted files.
-root_dir = "./"
-working_dir = os.listdir(root_dir)
-for item in working_dir:
-    if item.endswith(".jpg") or item.endswith(".mp4") or item.endswith(
-            ".mp3") or item.endswith(".png"):
-        os.remove(os.path.join(root_dir, item))
+clean("./")

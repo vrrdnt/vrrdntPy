@@ -1,15 +1,16 @@
+import json
 import youtube_dl
 
-# TODO: configurable naming of downloaded audio as well as audio codec \
-#  and quality handled in settings.json. Error handling for unsupported \
-#  codec on youtube-dl's part.
+with open('settings.json') as config:
+    settings = json.load(config)
+
 song_download = {
     'format': 'bestaudio/best',
     'outtmpl': 'audio.%(ext)s',
     'postprocessors': [{
         'key': 'FFmpegExtractAudio',
-        'preferredcodec': 'mp3',
-        'preferredquality': '320',
+        'preferredcodec': settings['audio_format'],
+        'preferredquality': settings['audio_quality'],
     }],
 }
 

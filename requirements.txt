@@ -3,5 +3,7 @@ youtube_dl
 Pillow
 requests
 pydub
-oauthlib
-requests_oauthlib
+ffmpeg
+ffprobe
+google_auth_oauthlib
+google-api-python-client
