@@ -1,9 +1,5 @@
 {
    "imgur_client_id":"",
-   "imgur_client_secret":"",
-   "imgur_redirect_uri":"https://localhost:8080/",
-   "imgur_auth_url":"https://api.imgur.com/oauth2/authorize",
-   "imgur_token_url":"https://api.imgur.com/oauth2/token",
    "base_desc":"This goes in every video description, below your custom description.",
    "base_tags":"Enter a comma-separated list of video tags here."
 }

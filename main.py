@@ -9,6 +9,7 @@ from PIL import Image, ImageOps
 import requests
 from ytdl import ytdl
 from render import render
+from imgur_upload import imgur_link
 
 # TODO: keep splitting main.py into separate files. render, image_gen, \
 #  upload and normalize should all be configurable (and toggleable?) in settings.json.
