@@ -1,12 +1,9 @@
 from google_auth_oauthlib.flow import InstalledAppFlow
-from googleapiclient.discovery import build # TODO: fix this!
+from googleapiclient.discovery import build
 import json
 
 with open('settings.json') as config:
     settings = json.load(config)
-
-# TODO: move info from yt_client_secrets_file to settings.json, if possible.
-#  Maybe rename to auth.py if Imgur user authentication is revisited?
 
 # YouTube authentication section
 

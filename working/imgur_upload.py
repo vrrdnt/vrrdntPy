@@ -2,7 +2,7 @@ import json
 import requests
 from base64 import b64encode
 
-with open('settings.json') as config:
+with open('../settings.json') as config:
     settings = json.load(config)
 
 # Imgur authentication section

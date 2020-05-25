@@ -1,14 +1,11 @@
+import shutil
+from PIL import Image, ImageOps
 
-
-
-
-
-
-
-
-#thumbnail
+# thumbnail
 
 # Generate thumbnail.jpg.
+
+
 shutil.copy('image.jpg', 'thumbnail.jpg')
 thumbnail = Image.open("thumbnail.jpg")
 size = (1920, 1080)

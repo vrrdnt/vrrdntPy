@@ -1,5 +1,3 @@
-import os
-import subprocess
 from io import BytesIO
 import shutil
 from base64 import b64encode
@@ -8,11 +6,9 @@ import easygui
 from PIL import Image, ImageOps
 import requests
 from ytdl import ytdl
-from render import render
-import imgur_upload
-from clean import clean
+from working.dir_clean import clean
 
-# TODO: keep splitting main.py into separate files. render, image_gen, \
+# TODO: keep splitting vrrdntPy.py into separate files. render, image_gen, \
 #  upload and normalize should all be configurable (and toggleable?) in settings.json.
 
 with open('settings.json') as config:
