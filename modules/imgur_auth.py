@@ -2,7 +2,7 @@ import json
 from oauthlib.oauth2 import MobileApplicationClient
 from requests_oauthlib import OAuth2Session
 
-with open('settings.json') as config:
+with open('../settings.json') as config:
     settings = json.load(config)
 
 # Imgur authentication section

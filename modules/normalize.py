@@ -2,7 +2,7 @@ from pydub import AudioSegment, effects
 from ffmpeg import video
 import json
 
-with open('settings.json') as config:
+with open('../settings.json') as config:
     settings = json.load(config)
 
 # TODO: configurable audio normalization in dB (ideally, dBFS if I have to) \

@@ -1,4 +1,8 @@
 import os
+import json
+
+with open('../settings.json') as config:
+    settings = json.load(config)
 
 # File extension list
 filetypes = [".mp3", ".wav", ".aac", ".m4a",

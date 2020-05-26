@@ -2,7 +2,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 import json
 
-with open('settings.json') as config:
+with open('../settings.json') as config:
     settings = json.load(config)
 
 # YouTube authentication section
