@@ -2,7 +2,6 @@
    "imgur_client_id":"",
    "base_desc":"This goes in every video description, below your custom description.",
    "base_tags":"Enter a comma-separated list of video tags here.",
-   "audio_file_name": "audio",
    "audio_quality": "320",
    "audio_format": "mp3",
    "audio_normalization": true,
