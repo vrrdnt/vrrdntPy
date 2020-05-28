@@ -16,8 +16,8 @@ download_options = {
     'outtmpl': 'audio.%(ext)s',
     'postprocessors': [{
         'key': 'FFmpegExtractAudio',
-        'preferredcodec': 'mp3',
-        'preferredquality': '320',
+        'preferredcodec': settings['audio_format'],
+        'preferredquality': settings['audio_quality'],
     }],
 }
 
@@ -37,30 +37,12 @@ def local_load():
     shutil.move(local_audio_file, "../working/audio.%s" % audio_extension, copy_function=shutil.copy2)
 
 
-def download_from_source():
-    url_enter = tk.Tk()
-    tk.Label(url_enter,
-             text="URL:").grid(row=0)
-
-    url_entry = tk.Entry(url_enter)
-
-    url_entry.grid(row=0, column=1)
-
-    tk.Button(url_enter,
-              text='Enter',
-              command=download(url_entry.get())).grid(row=2,
-                                                      column=0,
-                                                      pady=(4, 4))
-    # TODO: download does nothing. fix
-    tk.mainloop()
-
-
 window = tk.Tk()
 text_size_14 = tkfont.Font(size=14)
 
 body_text = tk.Label(window, text="Download audio or provide from local source?")
 frame_1 = tk.Frame(window)
-download_button = tk.Button(frame_1, text="Download", command=download_from_source)
+download_button = tk.Button(frame_1, text="Download") # TODO: on button press, add entry box and Enter button that calls download() and then quits
 download_button.config(width="10")
 local_button = tk.Button(frame_1, text="Local", command=local_load)
 local_button.config(width="10")
