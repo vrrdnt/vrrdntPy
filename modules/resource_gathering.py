@@ -15,7 +15,8 @@ class MainResourceGather(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
 
-        self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
+        self.title("vrrdntPy")
+        self.title_font = tkfont.Font(family='Segoe', size=18, weight="bold")
 
         container = tk.Frame(self)
         container.pack(side="top", fill="both", expand=True)
@@ -23,7 +24,7 @@ class MainResourceGather(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (MainMenu, AudioSource, ImageSource, AudioURLEntry):
+        for F in (MainMenu, AudioSource, ImageSource, AudioURLEntry, VideoDetails):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -37,6 +38,7 @@ class MainResourceGather(tk.Tk):
         frame.tkraise()
 
 
+# TODO: Constantly resize to fit the TOP FRAME only
 class MainMenu(tk.Frame):
 
     def __init__(self, parent, controller):
@@ -45,13 +47,17 @@ class MainMenu(tk.Frame):
         label = tk.Label(self, text="vrrdntPy", font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
 
-        button1 = tk.Button(self, text="Select Audio Source",
-                            command=lambda: controller.show_frame("AudioSource"))
-        button2 = tk.Button(self, text="Select Image Source",
-                            command=lambda: controller.show_frame("ImageSource"))
+        audio_source_button = tk.Button(self, text="Select Audio Source",
+                                        command=lambda: controller.show_frame("AudioSource"))
+        image_source_button = tk.Button(self, text="Select Image Source",
+                                        command=lambda: controller.show_frame("ImageSource"))
+        video_details_button = tk.Button(self, text="Enter video details",
+                                         command=lambda: controller.show_frame("VideoDetails"))
+
         exit_button = tk.Button(self, text="Quit", command=controller.destroy)
-        button1.pack()
-        button2.pack()
+        audio_source_button.pack()
+        image_source_button.pack()
+        video_details_button.pack()
         exit_button.pack()
 
 
@@ -122,6 +128,25 @@ class ImageSource(tk.Frame):
         label.pack(side="top", fill="x", pady=10)
         back_button = tk.Button(self, text="Go to the main menu",
                                 command=lambda: controller.show_frame("MainMenu"))
+        back_button.pack()
+
+
+# TODO: Add video detail entry boxes such as title, description, additional tags, etc.
+class VideoDetails(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        label = tk.Label(self, text="Enter Video Details", font=controller.title_font)
+        label.pack(side="top", fill="x", pady=10)
+        video_title = tk.Entry(self, textvariable=tk.StringVar())
+        video_description = tk.Text(self, height="20", width="30")
+        enter_button = tk.Button(self, text="Enter")
+        back_button = tk.Button(self, text="Go to the main menu",
+                                command=lambda: controller.show_frame("MainMenu"))
+        video_title.pack()
+        video_description.pack()
+        enter_button.pack()
         back_button.pack()
 
 
