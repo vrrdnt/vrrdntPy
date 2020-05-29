@@ -3,6 +3,7 @@ import shutil
 import youtube_dl
 import tkinter as tk
 from tkinter import filedialog
+from tkinter import scrolledtext
 from tkinter import font as tkfont
 import json
 
@@ -140,7 +141,7 @@ class VideoDetails(tk.Frame):
         label = tk.Label(self, text="Enter Video Details", font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
         video_title = tk.Entry(self, textvariable=tk.StringVar())
-        video_description = tk.Text(self, height="20", width="30")
+        video_description = tk.scrolledtext.ScrolledText(self, width=20, height=5)
         enter_button = tk.Button(self, text="Enter")
         back_button = tk.Button(self, text="Go to the main menu",
                                 command=lambda: controller.show_frame("MainMenu"))
