@@ -3,3 +3,4 @@
 youtube_client_secrets.json
 *.pyc
 /__pycache__/
+desktop.ini
