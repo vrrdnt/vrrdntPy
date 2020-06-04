@@ -7,3 +7,5 @@ ffmpeg
 ffprobe
 google_auth_oauthlib
 google-api-python-client
+httplib2
+oauthlib
