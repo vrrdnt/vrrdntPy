@@ -1,2 +1,4 @@
-
+/venv/
 desktop.ini
+/.idea/
+/modules/__pycache__/
