@@ -120,6 +120,17 @@ class AudioURLEntry(tk.Frame):
         enter_button.pack()
 
 
+# TODO: If image is gif, video.py needs to load the gif as VideoFileClip instead of ImageClip
+def local_image_source():
+    local_image_file = tk.filedialog.askopenfilename(initialdir=os.path.expanduser('~'),
+                                                     title="Select image file",
+                                                     filetypes=(("Image Files", ".jpg .jpeg .png .m4a .opus"),
+                                                                ("All Files", "*.*")))
+    audio_extension = local_audio_file.rsplit('.', 1)[1]
+    shutil.move(local_audio_file, "../working/audio.%s" % audio_extension, copy_function=shutil.copy2)
+
+
+
 class ImageSource(tk.Frame):
 
     def __init__(self, parent, controller):
