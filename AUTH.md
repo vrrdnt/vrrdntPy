@@ -1,1 +1,0 @@
-[https://developers.google.com/youtube/v3/quickstart/python#step_1_set_up_your_project_and_credentials](https://developers.google.com/youtube/v3/quickstart/python#step_1_set_up_your_project_and_credentials)
