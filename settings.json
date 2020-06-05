@@ -1,6 +1,14 @@
 {
-  "ClientID": "",
-  "ClientSecret": "",
-  "basedesc": "This goes in every video description, below your custom description.",
-  "basetags": "Enter a comma-separated list of video tags here."
+   "imgur_client_id":"",
+   "base_desc":"This goes in every video description, below your custom description.",
+   "base_tags":"Enter a comma-separated list of video tags here.",
+   "audio_quality": "320",
+   "audio_format": "mp3",
+   "audio_normalization": true,
+   "audio_loudness": "93.5",
+   "thumbnail_generation": true,
+   "thumbnail_width": 1920,
+   "thumbnail_height": 1080,
+   "video_width": 1920,
+   "video_height": 1080
 }
