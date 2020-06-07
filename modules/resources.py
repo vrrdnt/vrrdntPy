@@ -6,9 +6,17 @@ from tkinter import filedialog
 from tkinter import scrolledtext
 from tkinter import font as tkfont
 import json
+from PIL import Image
+from io import BytesIO
+import requests
+from base64 import b64encode
 
-with open('../settings.json') as config:
-    settings = json.load(config)
+if __name__ == "__main__":
+    with open('../settings.json') as config:
+        settings = json.load(config)
+else:
+    with open('./settings.json') as config:
+        settings = json.load(config)
 
 
 class MainResourceGather(tk.Tk):
@@ -25,7 +33,7 @@ class MainResourceGather(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (MainMenu, AudioSource, ImageSource, AudioURLEntry, VideoDetails):
+        for F in (MainMenu, AudioSource, ImageSource, AudioURLEntry, VideoDetails, ImageURLEntry):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -126,9 +134,15 @@ def local_image_source():
                                                      title="Select image file",
                                                      filetypes=(("Image Files", ".jpg .jpeg .png .m4a .opus"),
                                                                 ("All Files", "*.*")))
-    audio_extension = local_audio_file.rsplit('.', 1)[1]
-    shutil.move(local_audio_file, "../working/audio.%s" % audio_extension, copy_function=shutil.copy2)
+    audio_extension = local_image_file.rsplit('.', 1)[1]
+    shutil.move(local_image_file, "../working/image.%s" % audio_extension, copy_function=shutil.copy2)
 
+
+def remote_image_download(url):
+    response = requests.get(url)
+    img_ops = Image.open(BytesIO(response.content))
+    img_ops = img_ops.convert('RGB')
+    img_ops.save('image.jpg')
 
 
 class ImageSource(tk.Frame):
@@ -138,9 +152,29 @@ class ImageSource(tk.Frame):
         self.controller = controller
         label = tk.Label(self, text="Select the image source", font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
+        remote_source = tk.Button(self, text="Remote Source",
+                                  command=lambda: controller.show_frame("ImageURLEntry"))
         back_button = tk.Button(self, text="Go to the main menu",
                                 command=lambda: controller.show_frame("MainMenu"))
+        remote_source.pack()
         back_button.pack()
+
+
+class ImageURLEntry(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        label = tk.Label(self, text="Enter image URL", font=controller.title_font)
+        label.pack(side="top", fill="x", pady=10)
+        back_button = tk.Button(self, text="Go to the main menu",
+                                command=lambda: controller.show_frame("MainMenu"))
+        local_source = tk.Entry(self, textvariable=tk.StringVar())
+        enter_button = tk.Button(self, text="Enter",
+                                 command=lambda: remote_image_download(local_source.get()))
+        back_button.pack()
+        local_source.pack()
+        enter_button.pack()
 
 
 # TODO: Add video detail entry boxes such as title, description, additional tags, etc.
