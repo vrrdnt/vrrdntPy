@@ -21,4 +21,4 @@ You'll need a working Adobe After Effects project file, either named Video.aep o
 
 ## TODO
 
-Normalize audio.mp3 to 93.5 dB (using pyDub?)
+[vrrdntPy Trello](https://trello.com/b/lN65RyK4/vrrdntpy)
