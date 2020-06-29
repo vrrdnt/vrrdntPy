@@ -1,5 +1,5 @@
 import json
-from modules.resources import MainResourceGather
+from modules.resource_collection import MainResourceGather
 
 with open('./settings.json') as config:
     settings = json.load(config)

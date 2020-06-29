@@ -9,14 +9,15 @@ import json
 from PIL import Image
 from io import BytesIO
 import requests
-from base64 import b64encode
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     with open('../settings.json') as config:
         settings = json.load(config)
+        audio_directory = '../working/'
 else:
     with open('./settings.json') as config:
         settings = json.load(config)
+        audio_directory = './working/'
 
 
 class MainResourceGather(tk.Tk):
@@ -33,7 +34,7 @@ class MainResourceGather(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (MainMenu, AudioSource, ImageSource, AudioURLEntry, VideoDetails, ImageURLEntry):
+        for F in (MainMenu, AudioSource, ImageSource, AudioURLEntry, VideoTitle, ImageURLEntry, VideoDescription):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -53,21 +54,49 @@ class MainMenu(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
+
         label = tk.Label(self, text="vrrdntPy", font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
 
+        video_title_button = tk.Button(self, text="Enter video title",
+                                       command=lambda: controller.show_frame("VideoTitle"))
+        video_title_button.pack()
+
         audio_source_button = tk.Button(self, text="Select Audio Source",
                                         command=lambda: controller.show_frame("AudioSource"))
+        audio_source_button.pack()
+
         image_source_button = tk.Button(self, text="Select Image Source",
                                         command=lambda: controller.show_frame("ImageSource"))
-        video_details_button = tk.Button(self, text="Enter video details",
-                                         command=lambda: controller.show_frame("VideoDetails"))
+        image_source_button.pack()
+
+        video_description_button = tk.Button(self, text="Enter video description",
+                                             command=lambda: controller.show_frame("VideoDescription"))
+        video_description_button.pack()
 
         exit_button = tk.Button(self, text="Quit", command=controller.destroy)
-        audio_source_button.pack()
-        image_source_button.pack()
-        video_details_button.pack()
-        exit_button.pack()
+        exit_button.pack(side="bottom", pady=10)
+
+
+class VideoTitle(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        label = tk.Label(self, text="Enter Video Details", font=controller.title_font)
+        label.pack(side="top", fill="x", pady=10)
+
+        video_title = tk.Entry(self, textvariable=tk.StringVar())
+        video_title.pack()
+
+        next_button = tk.Button(self, text='Next',
+                                command=lambda: controller.show_frame('AudioSource'))
+        next_button.pack()
+
+        back_button = tk.Button(self, text="Back",
+                                command=lambda: controller.show_frame('MainMenu'))
+        back_button.pack()
 
 
 def local_audio_source():
@@ -76,13 +105,13 @@ def local_audio_source():
                                                      filetypes=(("Audio Files", ".mp3 .wav .aac .m4a .opus"),
                                                                 ("All Files", "*.*")))
     audio_extension = local_audio_file.rsplit('.', 1)[1]
-    shutil.move(local_audio_file, "../working/audio.%s" % audio_extension, copy_function=shutil.copy2)
+    shutil.move(local_audio_file, audio_directory + "audio.%s" % audio_extension, copy_function=shutil.copy2)
 
 
 def remote_audio_download(url):
     download_options = {
         'format': 'bestaudio/best',
-        'outtmpl': '../working/audio.%(ext)s',
+        'outtmpl': audio_directory + 'audio.%(ext)s',
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': settings['audio_format'],
@@ -98,17 +127,25 @@ class AudioSource(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
+
         label = tk.Label(self, text="Select the audio source", font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
+
         local_source = tk.Button(self, text="Local Source",
                                  command=local_audio_source)
+        local_source.pack()
+
         remote_source = tk.Button(self, text="Remote Source",
                                   command=lambda: controller.show_frame("AudioURLEntry"))
-        back_button = tk.Button(self, text="Go to the main menu",
-                                command=lambda: controller.show_frame("MainMenu"))
-        local_source.pack()
         remote_source.pack()
+
+        back_button = tk.Button(self, text="Back",
+                                command=lambda: controller.show_frame('VideoTitle'))
         back_button.pack()
+
+        main_menu = tk.Button(self, text="Main Menu",
+                              command=lambda: controller.show_frame('MainMenu'))
+        main_menu.pack()
 
 
 class AudioURLEntry(tk.Frame):
@@ -120,11 +157,13 @@ class AudioURLEntry(tk.Frame):
         label.pack(side="top", fill="x", pady=10)
         back_button = tk.Button(self, text="Go to the main menu",
                                 command=lambda: controller.show_frame("MainMenu"))
+        back_button.pack()
+
         local_source = tk.Entry(self, textvariable=tk.StringVar())
+        local_source.pack()
+
         enter_button = tk.Button(self, text="Enter",
                                  command=lambda: remote_audio_download(local_source.get()))
-        back_button.pack()
-        local_source.pack()
         enter_button.pack()
 
 
@@ -154,9 +193,10 @@ class ImageSource(tk.Frame):
         label.pack(side="top", fill="x", pady=10)
         remote_source = tk.Button(self, text="Remote Source",
                                   command=lambda: controller.show_frame("ImageURLEntry"))
+        remote_source.pack()
+
         back_button = tk.Button(self, text="Go to the main menu",
                                 command=lambda: controller.show_frame("MainMenu"))
-        remote_source.pack()
         back_button.pack()
 
 
@@ -169,30 +209,32 @@ class ImageURLEntry(tk.Frame):
         label.pack(side="top", fill="x", pady=10)
         back_button = tk.Button(self, text="Go to the main menu",
                                 command=lambda: controller.show_frame("MainMenu"))
+        back_button.pack()
+
         local_source = tk.Entry(self, textvariable=tk.StringVar())
+        local_source.pack()
+
         enter_button = tk.Button(self, text="Enter",
                                  command=lambda: remote_image_download(local_source.get()))
-        back_button.pack()
-        local_source.pack()
         enter_button.pack()
 
 
-# TODO: Add video detail entry boxes such as title, description, additional tags, etc.
-class VideoDetails(tk.Frame):
+class VideoDescription(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        label = tk.Label(self, text="Enter Video Details", font=controller.title_font)
+        label = tk.Label(self, text="Enter Video Description", font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
-        video_title = tk.Entry(self, textvariable=tk.StringVar())
+
         video_description = tk.scrolledtext.ScrolledText(self, width=20, height=5)
+        video_description.pack()
+
         enter_button = tk.Button(self, text="Enter")
+        enter_button.pack()
+
         back_button = tk.Button(self, text="Go to the main menu",
                                 command=lambda: controller.show_frame("MainMenu"))
-        video_title.pack()
-        video_description.pack()
-        enter_button.pack()
         back_button.pack()
 
 
