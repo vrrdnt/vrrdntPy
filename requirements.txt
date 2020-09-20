@@ -1,3 +1,0 @@
-easygui
-youtube_dl
-Pillow
