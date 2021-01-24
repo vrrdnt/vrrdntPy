@@ -1,3 +1,6 @@
+# Project Status
+This project has been abandoned. It wasn't terribly practical, nor was it efficient.
+
 # vrrdntPy
 
 Hey there! This is a script I authored that I use to render videos and upload them to [vrrdnt](https://youtube.com/vrrdnt). I wrote it over the span of about a week. It's my first self-authored script. I do know, however, that it could use some massive improvement. If you feel like contributing it please don't hesitate to make a pull request.
@@ -18,7 +21,3 @@ NOTE: This is subject to change. Both youtubeuploader and nexrender can in some 
 ## Files and folders
 
 You'll need a working Adobe After Effects project file, either named Video.aep or something else that you specify in render.js.
-
-## TODO
-
-[vrrdntPy Trello](https://trello.com/b/lN65RyK4/vrrdntpy)
